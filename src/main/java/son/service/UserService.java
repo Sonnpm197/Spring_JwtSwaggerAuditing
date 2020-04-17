@@ -1,9 +1,8 @@
-package murraco.service;
+package son.service;
 
 import javax.servlet.http.HttpServletRequest;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,10 +10,13 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import murraco.exception.CustomException;
-import murraco.model.User;
-import murraco.repository.UserRepository;
-import murraco.security.JwtTokenProvider;
+import org.springframework.transaction.annotation.Transactional;
+import son.exception.CustomException;
+import son.model.User;
+import son.repository.UserRepository;
+import son.security.JwtTokenProvider;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -31,8 +33,10 @@ public class UserService {
     public String signIn(String username, String password) {
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, password));
-            return jwtTokenProvider.createToken(username, userRepository.findByUsername(username).getRoles());
+                    new UsernamePasswordAuthenticationToken(username, password)
+            );
+            return jwtTokenProvider.createToken(username,
+                    userRepository.findByUsername(username).getRoles());
         } catch (AuthenticationException e) {
             throw new CustomException("Invalid username/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -68,4 +72,23 @@ public class UserService {
         return jwtTokenProvider.createToken(username, userRepository.findByUsername(username).getRoles());
     }
 
+    public User updateAuditing(String username) {
+        User user = userRepository.findByUsername(username);
+        user.setCreatedBy("yolo");
+        user.setEmail("Updated email");
+        if (user == null) {
+            throw new CustomException("The user doesn't exist", HttpStatus.NOT_FOUND);
+        }
+        return user;
+    }
+
+//    @Transactional(readOnly = true)
+    public List<User> clone(String username) {
+        User user = userRepository.findByUsername(username);
+        user.setUsername(username+ " cloned");
+        user.setCreatedBy("yolo");
+        user.setEmail("Updated email");
+//        userRepository.save(user);
+        return userRepository.findAll();
+    }
 }

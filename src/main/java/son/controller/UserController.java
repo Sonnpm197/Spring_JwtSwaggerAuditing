@@ -1,4 +1,4 @@
-package murraco.controller;
+package son.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,10 +19,12 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import murraco.dto.UserDataDTO;
-import murraco.dto.UserResponseDTO;
-import murraco.model.User;
-import murraco.service.UserService;
+import son.dto.UserDataDTO;
+import son.dto.UserResponseDTO;
+import son.model.User;
+import son.service.UserService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -34,13 +36,13 @@ public class UserController {
 
     private ModelMapper modelMapper;
 
-    @PostMapping("/signin")
-    @ApiOperation(value = "${UserController.signin}")
+    @GetMapping("/signin")
+    @ApiOperation(value = "${UserController.signin}", notes = "notes", response = String.class)
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Something went wrong"),
             @ApiResponse(code = 422, message = "Invalid username/password supplied")})
     public String login(
-            @ApiParam("Username") @RequestParam String username,
+            @ApiParam("Username you need to type") @RequestParam String username,
             @ApiParam("Password") @RequestParam String password) {
         return userService.signIn(username, password);
     }
@@ -52,7 +54,7 @@ public class UserController {
             @ApiResponse(code = 403, message = "Access denied"),
             @ApiResponse(code = 422, message = "Username is already in use"),
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    public String signup(@ApiParam("Signup User") @RequestBody UserDataDTO user) {
+    public String signUp(@ApiParam("Signup User") @RequestBody UserDataDTO user) {
         return userService.signUp(modelMapper.map(user, User.class));
     }
 
@@ -88,7 +90,7 @@ public class UserController {
             @ApiResponse(code = 400, message = "Something went wrong"),
             @ApiResponse(code = 403, message = "Access denied"),
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    public UserResponseDTO whoami(HttpServletRequest req) {
+    public UserResponseDTO whoAmI(HttpServletRequest req) {
         return modelMapper.map(userService.whoAmI(req), UserResponseDTO.class);
     }
 
@@ -96,6 +98,16 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
     public String refresh(HttpServletRequest req) {
         return userService.refresh(req.getRemoteUser());
+    }
+
+    @GetMapping("/update")
+    public User update(@RequestParam String username) {
+        return userService.updateAuditing(username);
+    }
+
+    @GetMapping("/clone")
+    public List<User> clone(@RequestParam String username) {
+        return userService.clone(username);
     }
 
 }

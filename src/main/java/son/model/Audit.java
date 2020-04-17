@@ -1,4 +1,4 @@
-package com.parkway.common.db.entity.audit;
+package son.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,21 +23,20 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class Audit implements Serializable {
-    private static final long serialVersionUID = -3869225360246516120L;
 
     @CreatedBy
-    @Column(name = "created_by", length = 15, nullable = false)
+    @Column(name = "created_by", length = 15)
     private String createdBy;
 
     @CreatedDate
-    @Column(name = "created_on", nullable = false)
+    @Column(name = "created_on")
     private LocalDateTime createdOn;
 
     @LastModifiedBy
-    @Column(name = "modified_by", length = 15, nullable = false)
+    @Column(name = "modified_by", length = 15)
     private String modifiedBy;
 
     @LastModifiedDate
-    @Column(name = "modified_on", nullable = false)
+    @Column(name = "modified_on")
     private LocalDateTime modifiedOn;
 }

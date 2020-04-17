@@ -1,12 +1,19 @@
-package murraco.dto;
+package son.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import murraco.model.Role;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import son.model.Role;
+
+import javax.persistence.Column;
 
 @NoArgsConstructor
 @Getter
@@ -21,4 +28,12 @@ public class UserResponseDTO {
   private String email;
   @ApiModelProperty(position = 3)
   List<Role> roles;
+
+  private String createdBy;
+
+  private LocalDateTime createdOn;
+
+  private String modifiedBy;
+
+  private LocalDateTime modifiedOn;
 }

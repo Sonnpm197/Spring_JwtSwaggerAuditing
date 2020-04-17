@@ -1,19 +1,21 @@
-package murraco.dto;
+package son.dto;
 
 import java.util.List;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import murraco.model.Role;
+import son.model.Role;
 
 @NoArgsConstructor
 @Getter
 @Setter
+@ApiModel(description = "Info of user")
 public class UserDataDTO {
   
-  @ApiModelProperty(position = 0)
+  @ApiModelProperty(position = 0, notes = "Username of this DTO")
   private String username;
   @ApiModelProperty(position = 1)
   private String email;

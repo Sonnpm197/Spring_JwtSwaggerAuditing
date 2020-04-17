@@ -1,11 +1,18 @@
-package murraco.repository;
+package son.repository;
 
-import javax.transaction.Transactional;
-
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.annotation.Immutable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import murraco.model.User;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import son.model.User;
 
+import java.util.List;
+
+@Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
     boolean existsByUsername(String username);
@@ -14,5 +21,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Transactional
     void deleteByUsername(String username);
+
+    List<User> findAll();
 
 }
