@@ -1,5 +1,6 @@
 package murraco.security;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,9 +11,9 @@ import murraco.model.User;
 import murraco.repository.UserRepository;
 
 @Service
+@AllArgsConstructor
 public class MyUserDetails implements UserDetailsService {
 
-  @Autowired
   private UserRepository userRepository;
 
   @Override
@@ -23,14 +24,14 @@ public class MyUserDetails implements UserDetailsService {
       throw new UsernameNotFoundException("User '" + username + "' not found");
     }
 
-    return org.springframework.security.core.userdetails.User//
-        .withUsername(username)//
-        .password(user.getPassword())//
-        .authorities(user.getRoles())//
-        .accountExpired(false)//
-        .accountLocked(false)//
-        .credentialsExpired(false)//
-        .disabled(false)//
+    return org.springframework.security.core.userdetails.User
+        .withUsername(username)
+        .password(user.getPassword())
+        .authorities(user.getRoles())
+        .accountExpired(false)
+        .accountLocked(false)
+        .credentialsExpired(false)
+        .disabled(false)
         .build();
   }
 
