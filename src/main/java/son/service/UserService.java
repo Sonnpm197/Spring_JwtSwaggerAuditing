@@ -1,7 +1,5 @@
 package son.service;
 
-import javax.servlet.http.HttpServletRequest;
-
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,14 +7,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import org.springframework.transaction.annotation.Transactional;
 import son.exception.CustomException;
 import son.model.User;
 import son.repository.UserRepository;
 import son.security.JwtTokenProvider;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 @Service
 @AllArgsConstructor
@@ -65,11 +61,13 @@ public class UserService {
     }
 
     public User whoAmI(HttpServletRequest req) {
-        return userRepository.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
+        return userRepository.findByUsername(
+                jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
     }
 
     public String refresh(String username) {
-        return jwtTokenProvider.createToken(username, userRepository.findByUsername(username).getRoles());
+        return jwtTokenProvider.createToken(username,
+                userRepository.findByUsername(username).getRoles());
     }
 
     public User updateAuditing(String username) {
@@ -80,15 +78,5 @@ public class UserService {
             throw new CustomException("The user doesn't exist", HttpStatus.NOT_FOUND);
         }
         return user;
-    }
-
-//    @Transactional(readOnly = true)
-    public List<User> clone(String username) {
-        User user = userRepository.findByUsername(username);
-        user.setUsername(username+ " cloned");
-        user.setCreatedBy("yolo");
-        user.setEmail("Updated email");
-//        userRepository.save(user);
-        return userRepository.findAll();
     }
 }

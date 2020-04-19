@@ -1,30 +1,15 @@
 package son.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
+import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import org.springframework.web.bind.annotation.*;
 import son.dto.UserDataDTO;
 import son.dto.UserResponseDTO;
 import son.model.User;
 import son.service.UserService;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/users")
@@ -59,7 +44,6 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/{username}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "${UserController.delete}")
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Something went wrong"),
@@ -72,7 +56,6 @@ public class UserController {
     }
 
     @GetMapping(value = "/{username}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "${UserController.search}", response = UserResponseDTO.class)
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Something went wrong"),
@@ -84,7 +67,6 @@ public class UserController {
     }
 
     @GetMapping(value = "/me")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
     @ApiOperation(value = "${UserController.me}", response = UserResponseDTO.class)
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Something went wrong"),
@@ -95,7 +77,6 @@ public class UserController {
     }
 
     @GetMapping("/refresh")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
     public String refresh(HttpServletRequest req) {
         return userService.refresh(req.getRemoteUser());
     }
@@ -103,11 +84,6 @@ public class UserController {
     @GetMapping("/update")
     public User update(@RequestParam String username) {
         return userService.updateAuditing(username);
-    }
-
-    @GetMapping("/clone")
-    public List<User> clone(@RequestParam String username) {
-        return userService.clone(username);
     }
 
 }

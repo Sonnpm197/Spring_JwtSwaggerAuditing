@@ -14,14 +14,14 @@ import son.model.Role;
 @Setter
 @ApiModel(description = "Info of user")
 public class UserDataDTO {
-  
-  @ApiModelProperty(position = 0, notes = "Username of this DTO")
-  private String username;
-  @ApiModelProperty(position = 1)
-  private String email;
-  @ApiModelProperty(position = 2)
-  private String password;
-  @ApiModelProperty(position = 3)
-  List<Role> roles;
+
+    @ApiModelProperty(position = 0, notes = "Username of this DTO")
+    private String username;
+    @ApiModelProperty(position = 1)
+    private String email;
+    @ApiModelProperty(position = 2)
+    private String password;
+    @ApiModelProperty(position = 3)
+    List<Role> roles;
 
 }

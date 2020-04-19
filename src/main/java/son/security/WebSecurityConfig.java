@@ -16,8 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-// Allow method security level
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 @AllArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -37,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users/signin").permitAll()
                 .antMatchers("/users/signup").permitAll()
                 .antMatchers("/users/update").permitAll()
-                .antMatchers("/users/clone").permitAll()
+                .antMatchers("/users/me").permitAll()
                 .antMatchers("/h2-console/**/**").permitAll()
                 .antMatchers("/test").permitAll()
                 // Disallow everything else..

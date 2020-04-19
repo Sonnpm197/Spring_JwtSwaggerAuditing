@@ -11,24 +11,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
 
-
 @Configuration
 @EnableJpaAuditing
 public class AuditingConfig {
     @Bean
     public AuditorAware<String> auditorProvider() {
-        return new AuditorAware<String>() {
-            @Override
-            public Optional<String> getCurrentAuditor() {
-                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-                if (authentication == null ||
-                        !authentication.isAuthenticated() ||
-                        authentication instanceof AnonymousAuthenticationToken) {
-                    return Optional.empty();
-                }
-                UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
-                return Optional.ofNullable(userPrincipal.getUsername());
+        return () -> {
+            Authentication authentication =
+                    SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null ||
+                    !authentication.isAuthenticated() ||
+                    authentication instanceof AnonymousAuthenticationToken) {
+                return Optional.empty();
             }
+            UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
+            return Optional.ofNullable(userPrincipal.getUsername());
         };
     }
 }

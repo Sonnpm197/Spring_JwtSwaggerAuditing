@@ -1,12 +1,7 @@
 package son.repository;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.annotation.Immutable;
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import son.model.User;
 
