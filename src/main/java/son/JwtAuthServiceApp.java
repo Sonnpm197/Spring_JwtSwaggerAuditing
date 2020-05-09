@@ -15,6 +15,7 @@ import son.model.User;
 import son.service.UserService;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+// http://localhost:8080/swagger-ui.html
 @SpringBootApplication
 @AllArgsConstructor
 public class JwtAuthServiceApp implements CommandLineRunner {
